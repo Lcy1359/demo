@@ -26,6 +26,15 @@ public class HdfsFileDownloadController {
     @Value("${hdfs.path}")
     private String hdfsPath;
 
+    /**
+     * **What does `{fileName:.+}` mean in API?**
+     *
+     * In an API, `{fileName:.+}` is a parameter that allows for the dynamic insertion of a file name into a URL or file path. The `.+` portion of the parameter is a regular expression that matches any character, one or more times, so that any file name can be used with the API.
+     *
+     * For example, in the Spring Boot implementation provided earlier, the path `/download/{fileName:.+}` indicates that the API expects a file name to be provided, which will be used to locate and download the requested file. When a user makes a request to this API endpoint with a specific file name, the API will use that name to locate the file on the server, and then return the contents of that file to the user in the response.
+     *
+     * This technique is often used in RESTful APIs to provide a dynamic way to access resources. By using parameters in the URL, an API can be designed to accept a wide variety of requests, all using a single endpoint.
+     */
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName) throws IOException {
         FileSystem fs = FileSystem.get(conf);
@@ -45,12 +54,3 @@ public class HdfsFileDownloadController {
 }
 
 
-/**
- * **What does `{fileName:.+}` mean in API?**
- *
- * In an API, `{fileName:.+}` is a parameter that allows for the dynamic insertion of a file name into a URL or file path. The `.+` portion of the parameter is a regular expression that matches any character, one or more times, so that any file name can be used with the API.
- *
- * For example, in the Spring Boot implementation provided earlier, the path `/download/{fileName:.+}` indicates that the API expects a file name to be provided, which will be used to locate and download the requested file. When a user makes a request to this API endpoint with a specific file name, the API will use that name to locate the file on the server, and then return the contents of that file to the user in the response.
- *
- * This technique is often used in RESTful APIs to provide a dynamic way to access resources. By using parameters in the URL, an API can be designed to accept a wide variety of requests, all using a single endpoint.
- */
